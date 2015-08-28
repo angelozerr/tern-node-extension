@@ -18,6 +18,26 @@
     }
   };
   
+  var nodeRequire_guessType = function(arg, i, file, setType, addValueType) {
+    var cx = infer.cx(), server = cx.parent, data = server._node;
+    //var currentFile = data.currentFile || data.resolveProjectPath(server, file.name);
+
+    function addModules(modules, addValueType) {
+      for (var name in modules) {
+        //if (name == currentFile) continue;
+        //var moduleName = data.resolveModulePath(name, currentFile);
+        //addValueType("requiredModule", '"' + moduleName + '"');
+        addValueType("requiredModule", '"' + name + '"');
+      }
+    }
+    if (i == 0) {
+      setType("requiredModule");
+      addModules(cx.definitions.node, addValueType);
+      addModules(data.modules, addValueType);
+      return true;
+    }
+  };
+  
   tern.registerPlugin("node-extension", function(server, options) {
     return {
       passes: {postLoadDef: postLoadDef}  
@@ -29,6 +49,7 @@
     if (defName === 'node') {
       var require = cx.definitions.node.require;
       require.lint = nodeRequire_lint;
+      require.guessType = nodeRequire_guessType;
     }
   }
   
