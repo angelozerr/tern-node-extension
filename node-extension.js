@@ -7,17 +7,29 @@
 })(function(infer, tern, require) {
   "use strict";
   
+  
+  // TODO : remove this function when PR https://github.com/marijnh/tern/pull/621 will be accepted
+  function getModType(node, me) {
+    var modName = me.isModName(node), imp, prop
+    if (imp = me.isImport(node)) {
+      modName = imp.name
+      prop = imp.prop
+    }
+    if (!modName) return
+
+    var modType = me.resolveModule(modName, node.sourceFile.name)
+    return (prop ? modType.getProp(prop) : modType).getType()
+  }
+  
   var nodeRequire_lint = function(node, addMessage, getRule) {
     var rule = getRule("UnknownModule");
     if (!rule) return;
     var cx = infer.cx(), server = cx.parent, data = server._node;
     var argNodes = node.arguments;
     if (argNodes && argNodes.length && argNodes[0].type == "Literal" || typeof argNodes[0].value == "string") {
-      var currentFile = argNodes[0].sourceFile.name
-
-      var name = argNodes[0].value
-      var mod = server.mod.modules.resolveModule(name, currentFile)
-      if (!(mod && (mod.getFunctionType() || mod.getType()))) addMessage(argNodes[0], "Unknown module '" + argNodes[0].value + "'", rule.severity);
+      var me = infer.cx().parent.mod.modules
+      var modType = getModType(argNodes[0], me);
+      if (!modType) addMessage(argNodes[0], "Unknown module '" + argNodes[0].value + "'", rule.severity);
     }
   };
   
