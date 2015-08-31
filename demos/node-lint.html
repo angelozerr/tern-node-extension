@@ -30,7 +30,7 @@ CodeMirror.tern.addDef = function(def) {
   <!-- Tern JS -->
   <script src="../node_modules/tern/node_modules/acorn/dist/acorn.js"></script>
   <script src="../node_modules/tern/node_modules/acorn/dist/acorn_loose.js"></script>
-  <script src="../node_modules/tern/node_modules/acorn/DIST/walk.js"></script>
+  <script src="../node_modules/tern/node_modules/acorn/dist/walk.js"></script>
   <script src="../node_modules/tern/lib/signal.js"></script>
   <script src="../node_modules/tern/lib/tern.js"></script>
   <script src="../node_modules/tern/lib/def.js"></script>
@@ -52,6 +52,9 @@ CodeMirror.tern.addDef = function(def) {
   <script src="../node_modules/tern-lint/lint.js"></script>
 
 <!--  Tern node.js -->
+  <script src="../node_modules/tern/plugin/modules.js"></script>
+  <script src="../node_modules/tern/plugin/commonjs.js"></script>
+  <script src="../node_modules/tern/plugin/node_resolve.js"></script>  
   <script src="../node_modules/tern/plugin/node.js"></script>      
   <script src="../node-extension.js"></script>
     
@@ -59,7 +62,6 @@ CodeMirror.tern.addDef = function(def) {
       .CodeMirror {border: 1px solid #ddd;}
     </style>
 <div id=nav>
-  <a href="http://codemirror.net"><img id=logo src="../node_modules/codemirror/doc/logo.png"></a>
 
   <ul>
     <li><a href="../index.html">Home</a>
@@ -114,7 +116,7 @@ overview.</p>
   //var server;
   //getURL("http://ternjs.net/defs/ecma5.json", function(err, code) {
   //  if (err) throw new Error("Request for ecma5.json: " + err);
-  var server = new CodeMirror.TernServer({defs: defs, plugins:{"node": {}, "lint":{}, "node-extension": {}}});
+  var server = new CodeMirror.TernServer({defs: defs, plugins:{"modules": {}, "commonjs": {}, "node_resolve": {}, "node": {}, "lint":{}, "node-extension": {}}});
     editor.setOption("extraKeys", {
       "Ctrl-Space": function(cm) { server.complete(cm); },
       "Ctrl-I": function(cm) { server.showType(cm); },

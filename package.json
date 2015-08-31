@@ -11,14 +11,16 @@
   },
   "scripts": {
     "test": "node ./test/all.js"
-  },  
+  },
   "dependencies": {
-    "tern": "^0.13.0",
+    "tern": "^0.14.0",
     "tern-lint": "^0.3.0",
     "tern-guess-types": "^0.7.0"
   },
   "devDependencies": { 
   	"test": ">=0.0.5",
-  	"codemirror": "^5.6.0"
+  	"codemirror": "^5.6.0",
+  	"codemirror-extension": "^0.1.0",
+  	"codemirror-javascript": "^0.1.0"
   }
 }

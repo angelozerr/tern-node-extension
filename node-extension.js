@@ -13,7 +13,10 @@
     var cx = infer.cx(), server = cx.parent, data = server._node;
     var argNodes = node.arguments;
     if (argNodes && argNodes.length && argNodes[0].type == "Literal" || typeof argNodes[0].value == "string") {
-      var mod = argNodes[0].required;                        
+      var currentFile = argNodes[0].sourceFile.name
+
+      var name = argNodes[0].value
+      var mod = server.mod.modules.resolveModule(name, currentFile)
       if (!(mod && (mod.getFunctionType() || mod.getType()))) addMessage(argNodes[0], "Unknown module '" + argNodes[0].value + "'", rule.severity);
     }
   };
@@ -46,8 +49,8 @@
   
   function postLoadDef(json) {
     var cx = infer.cx(), defName = json["!name"];
-    if (defName === 'node') {
-      var require = cx.definitions.node.require;
+    if (defName === 'commonjs') {
+      var require = cx.definitions.commonjs.require;
       require.lint = nodeRequire_lint;
       require.guessType = nodeRequire_guessType;
     }
