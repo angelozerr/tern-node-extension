@@ -15,7 +15,7 @@
   "dependencies": {
     "tern": "^0.15.0",
     "tern-lint": "^0.4.0",
-    "tern-guess-types": "^0.8.0"
+    "tern-guess-types": "^0.9.0"
   },
   "devDependencies": { 
   	"test": ">=0.0.5",
